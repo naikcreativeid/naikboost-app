@@ -3,45 +3,51 @@ import { Check } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { createClient } from "@/lib/supabase/server";
 
-const plans = [
-  {
-    name: "Starter",
-    price: "Rp 49.000",
-    description: "Cocok buat coba dulu dan lihat bagaimana layanan ini bekerja.",
-    features: [
-      "Untuk kebutuhan dasar",
-      "Proses cepat",
-      "Support ramah",
-      "Cocok untuk satu campaign kecil",
-    ],
-  },
-  {
-    name: "Popular",
-    price: "Rp 199.000",
-    description: "Pilihan favorit untuk bisnis dan creator yang ingin hasil lebih terasa.",
-    features: [
-      "Value paling seimbang",
-      "Cocok untuk promo dan launching",
-      "Prioritas proses lebih nyaman",
-      "Garansi refill pada layanan tertentu",
-    ],
-    highlighted: true,
-  },
-  {
-    name: "Premium",
-    price: "Rp 349.000",
-    description: "Untuk akun yang butuh dorongan lebih besar di momen penting.",
-    features: [
-      "Untuk kebutuhan lebih serius",
-      "Cocok buat akun aktif",
-      "Siap untuk campaign lebih besar",
-      "Pendampingan lebih tenang saat order",
-    ],
-  },
-];
+type PackagePlan = {
+  id: string;
+  name: string;
+  price: number;
+  description: string | null;
+  is_featured: boolean;
+  delivery_time: string | null;
+  bonus_description: string | null;
+  service:
+    | {
+        refill_days: number;
+      }
+    | {
+        refill_days: number;
+      }[]
+    | null;
+};
 
-export function Pricing() {
+export async function Pricing() {
+  const supabase = createClient();
+  const { data } = await supabase
+    .from("packages")
+    .select("id, name, price, description, is_featured, delivery_time, bonus_description, service:services(refill_days)")
+    .eq("is_active", true)
+    .order("sort_order", { ascending: true })
+    .limit(3);
+
+  const plans = ((data || []) as PackagePlan[]).map((plan) => {
+    const service = Array.isArray(plan.service) ? plan.service[0] : plan.service;
+    const features = [
+      plan.delivery_time ? `Estimasi ${plan.delivery_time}` : "Proses cepat",
+      service?.refill_days ? `Garansi refill ${service.refill_days} hari` : "Tanpa langkah ribet",
+      plan.bonus_description || "Support ramah",
+      "Cocok untuk campaign yang serius",
+    ];
+
+    return {
+      ...plan,
+      service,
+      features,
+    };
+  });
+
   return (
     <section id="harga" className="bg-slate-50 py-20 sm:py-24">
       <div className="container space-y-12">
@@ -61,14 +67,14 @@ export function Pricing() {
         <div className="grid gap-6 xl:grid-cols-3">
           {plans.map((plan) => (
             <div
-              key={plan.name}
+              key={plan.id}
               className={cn(
                 "relative rounded-[2rem] border border-slate-200 bg-white p-7 shadow-sm",
-                plan.highlighted &&
+                plan.is_featured &&
                   "border-brand bg-brand text-white shadow-2xl shadow-brand-300/30",
               )}
             >
-              {plan.highlighted ? (
+              {plan.is_featured ? (
                 <div className="absolute right-6 top-6 rounded-full bg-white/15 px-3 py-1 text-xs font-bold uppercase tracking-[0.2em] text-white">
                   Paling Dipilih
                 </div>
@@ -76,19 +82,21 @@ export function Pricing() {
               <p
                 className={cn(
                   "text-sm font-semibold uppercase tracking-[0.2em] text-brand-600",
-                  plan.highlighted && "text-brand-100",
+                  plan.is_featured && "text-brand-100",
                 )}
               >
                 {plan.name}
               </p>
-              <p className="mt-4 text-4xl font-black">{plan.price}</p>
+              <p className="mt-4 text-4xl font-black">
+                Rp {plan.price.toLocaleString("id-ID")}
+              </p>
               <p
                 className={cn(
                   "mt-4 text-sm leading-7 text-slate-600",
-                  plan.highlighted && "text-brand-50",
+                  plan.is_featured && "text-brand-50",
                 )}
               >
-                {plan.description}
+                {plan.description || "Paket siap pakai untuk bisnis dan creator yang ingin hasil lebih rapi."}
               </p>
 
               <div className="mt-6 space-y-3">
@@ -97,7 +105,7 @@ export function Pricing() {
                     <div
                       className={cn(
                         "mt-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-brand-50 text-brand-600",
-                        plan.highlighted && "bg-white/15 text-white",
+                        plan.is_featured && "bg-white/15 text-white",
                       )}
                     >
                       <Check className="h-3.5 w-3.5" />
@@ -105,7 +113,7 @@ export function Pricing() {
                     <p
                       className={cn(
                         "text-sm leading-7 text-slate-700",
-                        plan.highlighted && "text-white",
+                        plan.is_featured && "text-white",
                       )}
                     >
                       {feature}
@@ -117,15 +125,15 @@ export function Pricing() {
               <Button
                 asChild
                 size="lg"
-                variant={plan.highlighted ? "secondary" : "default"}
+                variant={plan.is_featured ? "secondary" : "default"}
                 className={cn(
                   "mt-8 w-full rounded-full",
-                  plan.highlighted
+                  plan.is_featured
                     ? "bg-white text-brand hover:bg-brand-50"
                     : "bg-brand text-white hover:bg-brand-600",
                 )}
               >
-                <Link href="/register">Mulai Sekarang</Link>
+                <Link href={`/order/${plan.id}`}>Pilih {plan.name}</Link>
               </Button>
             </div>
           ))}
