@@ -1,60 +1,74 @@
-import { ChevronDown } from "lucide-react";
-
-import { SectionHeading } from "@/components/landing/section-heading";
-
 const faqs = [
   {
-    question: "Apakah saya harus kasih password akun?",
+    question: "Followers-nya beneran orang atau bot?",
     answer:
-      "Tidak. Kamu cukup kirim link akun atau postingan yang mau dibantu. Kami tidak minta password untuk proses order biasa.",
+      "Layanan kami diarahkan untuk kualitas yang lebih meyakinkan, bukan akun kosong yang gampang kelihatan aneh. Fokusnya supaya tampilan akun kamu lebih siap dilihat orang baru.",
   },
   {
-    question: "Berapa lama prosesnya mulai jalan?",
+    question: "Akun saya bisa kena banned nggak?",
     answer:
-      "Biasanya proses dimulai cepat setelah pesanan masuk. Waktu tepatnya bisa menyesuaikan layanan yang kamu pilih.",
+      "Sejauh ini alur kami dibuat bertahap dan lebih natural. Kami juga tidak pernah minta password akun untuk order biasa.",
   },
   {
-    question: "Apakah cocok untuk bisnis kecil?",
+    question: "Kalau followers-nya turun, gimana?",
     answer:
-      "Cocok. Justru banyak bisnis kecil butuh dorongan awal supaya akun dan promonya terlihat lebih hidup.",
+      "Tenang, banyak paket kami punya garansi refill. Kalau turun di masa garansi, tinggal hubungi CS kami untuk bantu cek dan isi ulang.",
   },
   {
-    question: "Kalau saya baru pertama kali order, bingung tidak?",
+    question: "Bayar dulu atau dikirim dulu?",
     answer:
-      "Tidak perlu khawatir. Alurnya dibuat simpel dan tim kami siap bantu kalau ada bagian yang belum jelas.",
+      "Untuk MVP ini pembayaran dilakukan dulu lewat transfer. Setelah bukti masuk dan diverifikasi, pesanan langsung diproses.",
   },
   {
-    question: "Apakah ada garansi refill?",
+    question: "Bisa buat akun pribadi atau cuma bisnis?",
     answer:
-      "Ada untuk layanan tertentu. Nanti kamu bisa lihat detailnya saat memilih paket atau tanya ke tim kami.",
+      "Bisa keduanya. Banyak juga yang pakai buat akun personal biar lebih percaya diri saat mulai aktif posting konten.",
+  },
+  {
+    question: "Berapa lama pengirimannya?",
+    answer:
+      "Tergantung paketnya. Ada yang mulai cepat dalam beberapa jam, ada juga yang bertahap sampai 24-48 jam supaya tetap lebih aman.",
+  },
+  {
+    question: "Kalau saya punya banyak akun, ada harga khusus?",
+    answer:
+      "Bisa. Untuk kebutuhan rutin atau banyak akun, paling enak langsung hubungi tim kami supaya dibantu pilih skema yang pas.",
   },
 ];
 
 export function Faq() {
   return (
     <section id="faq" className="py-20 sm:py-24">
-      <div className="container space-y-12">
-        <SectionHeading
-          eyebrow="FAQ"
-          title="Pertanyaan yang paling sering ditanya"
-          description="Kalau kamu masih ragu, mulai dari sini. Jawabannya kami buat singkat dan jelas."
-        />
+      <div className="container">
+        <div className="mb-14 text-center">
+          <h2 className="text-[clamp(28px,4vw,40px)] font-extrabold leading-[1.15] tracking-[-0.025em] text-[#0a1330]">
+            Pertanyaan yang{" "}
+            <span className="font-serif font-normal italic text-brand">
+              Sering Ditanya
+            </span>
+          </h2>
+          <p className="mx-auto mt-4 max-w-[560px] text-[17px] text-[#4a5680]">
+            Belum nemu jawaban? Chat CS kami, nanti dibantu dengan bahasa yang gampang
+            dipahami.
+          </p>
+        </div>
 
-        <div className="mx-auto max-w-3xl space-y-4">
-          {faqs.map((faq) => (
+        <div className="mx-auto max-w-[760px] space-y-[10px]">
+          {faqs.map((faq, index) => (
             <details
               key={faq.question}
-              className="group rounded-[1.5rem] border border-slate-200 bg-white p-6 shadow-sm open:border-brand-200 open:shadow-lg open:shadow-brand-100/30"
+              className="overflow-hidden rounded-xl border border-[#e6ecf7] bg-white open:border-brand"
+              open={index === 0}
             >
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 marker:content-none">
-                <span className="text-left text-lg font-semibold text-slate-950">
-                  {faq.question}
-                </span>
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-500 transition group-open:rotate-180 group-open:bg-brand-50 group-open:text-brand-600">
-                  <ChevronDown className="h-5 w-5" />
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-[22px] py-[18px] text-[15px] font-semibold text-[#0a1330] marker:content-none">
+                <span>{faq.question}</span>
+                <span className="text-[22px] font-light text-[#8590b0] transition-transform details-open:rotate-45">
+                  +
                 </span>
               </summary>
-              <p className="pt-4 text-sm leading-7 text-slate-600">{faq.answer}</p>
+              <p className="px-[22px] pb-5 text-[14px] leading-[1.65] text-[#4a5680]">
+                {faq.answer}
+              </p>
             </details>
           ))}
         </div>

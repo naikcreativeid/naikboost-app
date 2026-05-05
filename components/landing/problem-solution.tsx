@@ -1,65 +1,76 @@
-import { CheckCircle2, CircleAlert } from "lucide-react";
-
-import { SectionHeading } from "@/components/landing/section-heading";
-
 const problems = [
-  "Konten sudah bagus, tapi tetap sepi dan susah dilirik orang baru.",
-  "Lagi ada promo atau launching, tapi pergerakannya lambat banget.",
-  "Bingung cari jasa yang jelas, takut prosesnya lama dan tidak rapi.",
-  "Mau akun terlihat lebih meyakinkan, tapi tidak tahu harus mulai dari mana.",
+  {
+    title: "Konten Sepi Padahal Udah Niat",
+    text: "Udah edit berjam-jam, caption udah panjang, hashtag udah lengkap. Tapi yang lihat cuma 30-50 orang. Capek, kan?",
+  },
+  {
+    title: "Calon Customer Kabur Sebelum Beli",
+    text: "Mereka cek IG kamu dulu sebelum transfer. Lihat followers cuma 200, mereka jadi ragu padahal produk kamu bagus.",
+  },
+  {
+    title: "Mau Endorse Tapi Brand Nggak Lirik",
+    text: "Brand pakai sistem otomatis buat cari influencer. Followers di bawah 5.000? Akun kamu nggak akan pernah muncul di radar mereka.",
+  },
 ];
 
 const solutions = [
-  "Pilih layanan sesuai kebutuhan akun atau momen promosi kamu.",
-  "Kirim link postingan atau akun tanpa proses yang bikin pusing.",
-  "Pesanan diproses cepat dengan alur yang simpel dan mudah dipantau.",
-  "Ada garansi refill untuk layanan tertentu supaya kamu lebih tenang.",
+  {
+    title: "Konten Mulai Disebar ke Lebih Banyak Orang",
+    text: "Akun kamu mulai dilihat sistem Instagram atau TikTok, lalu kontennya dibawa ke FYP atau Explore.",
+  },
+  {
+    title: "Calon Customer Lebih Yakin & Cepat Closing",
+    text: "Followers banyak bikin akun kelihatan lebih meyakinkan. Calon customer jadi nggak ragu buat lanjut beli.",
+  },
+  {
+    title: "Akun Kamu Masuk Radar Brand & Sponsor",
+    text: "Threshold followers terlewati. Brand mulai bisa nemuin akun kamu saat mereka cari creator yang cocok.",
+  },
 ];
 
 export function ProblemSolution() {
   return (
-    <section className="bg-slate-50 py-20 sm:py-24">
-      <div className="container space-y-12">
-        <SectionHeading
-          eyebrow="Masalah Umum"
-          title="Pernah ngalamin hal ini?"
-          description="Kalau iya, kamu bukan satu-satunya. Banyak bisnis dan creator punya masalah yang sama sebelum pakai alur boost yang lebih rapi."
-        />
+    <section className="py-20 sm:py-24">
+      <div className="container">
+        <div className="mb-14 text-center">
+          <h2 className="text-[clamp(28px,4vw,40px)] font-extrabold leading-[1.15] tracking-[-0.025em] text-[#0a1330]">
+            Pernah Ngalamin{" "}
+            <span className="font-serif font-normal italic text-brand">Hal Ini?</span>
+          </h2>
+          <p className="mx-auto mt-4 max-w-[560px] text-[17px] text-[#4a5680]">
+            Tiga masalah klasik yang bikin akun kamu jalan di tempat dan cara
+            NaikBoost ngebantu.
+          </p>
+        </div>
 
-        <div className="grid gap-6 lg:grid-cols-2">
-          <div className="rounded-[2rem] border border-red-100 bg-red-50 p-6 sm:p-8">
-            <div className="mb-6 inline-flex rounded-full bg-white px-4 py-2 text-sm font-semibold text-red-600">
-              Yang sering bikin capek
+        <div className="grid gap-4 md:grid-cols-3">
+          {problems.map((item) => (
+            <div
+              key={item.title}
+              className="rounded-xl border border-[#fecaca] bg-[#fee2e2] px-[22px] py-5"
+            >
+              <h3 className="text-[15px] font-bold text-[#7f1d1d]">
+                <span className="mr-1.5 font-extrabold text-[#ef4444]">✗</span>
+                {item.title}
+              </h3>
+              <p className="mt-2 text-[14px] leading-[1.55] text-[#991b1b]">{item.text}</p>
             </div>
-            <div className="space-y-4">
-              {problems.map((problem) => (
-                <div
-                  key={problem}
-                  className="flex gap-4 rounded-3xl border border-red-100 bg-white p-5"
-                >
-                  <CircleAlert className="mt-0.5 h-5 w-5 shrink-0 text-red-500" />
-                  <p className="text-sm leading-7 text-slate-700">{problem}</p>
-                </div>
-              ))}
-            </div>
-          </div>
+          ))}
+        </div>
 
-          <div className="rounded-[2rem] border border-emerald-100 bg-emerald-50 p-6 sm:p-8">
-            <div className="mb-6 inline-flex rounded-full bg-white px-4 py-2 text-sm font-semibold text-emerald-700">
-              Solusi dari NaikBoost
+        <div className="mt-4 grid gap-4 md:grid-cols-3">
+          {solutions.map((item) => (
+            <div
+              key={item.title}
+              className="rounded-xl border border-[#a7f3d0] bg-[#d1fae5] px-[22px] py-5"
+            >
+              <h3 className="text-[15px] font-bold text-[#064e3b]">
+                <span className="mr-1.5 font-extrabold text-[#10b981]">✓</span>
+                {item.title}
+              </h3>
+              <p className="mt-2 text-[14px] leading-[1.55] text-[#065f46]">{item.text}</p>
             </div>
-            <div className="space-y-4">
-              {solutions.map((solution) => (
-                <div
-                  key={solution}
-                  className="flex gap-4 rounded-3xl border border-emerald-100 bg-white p-5"
-                >
-                  <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-500" />
-                  <p className="text-sm leading-7 text-slate-700">{solution}</p>
-                </div>
-              ))}
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </section>

@@ -63,3 +63,12 @@
     @apply bg-background text-foreground font-sans antialiased;
   }
 }
+
+@keyframes drawLine {
+  from {
+    stroke-dashoffset: 1000;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}

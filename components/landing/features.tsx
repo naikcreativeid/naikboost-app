@@ -1,80 +1,94 @@
 import {
-  BadgeCheck,
+  BarChart3,
+  Clock3,
   Flame,
-  Gauge,
   ImageIcon,
-  MessageCircleHeart,
-  PlaySquare,
-  TimerReset,
-  Video,
+  PlayCircle,
+  ShieldCheck,
+  Sparkles,
+  ThumbsUp,
 } from "lucide-react";
-
-import { SectionHeading } from "@/components/landing/section-heading";
 
 const features = [
   {
     title: "Instagram",
-    text: "Bantu akun terlihat lebih aktif untuk feed, reels, atau promo yang lagi jalan.",
+    text: "Followers, likes, views Reels, story views, komentar dengan kualitas yang lebih meyakinkan.",
     icon: ImageIcon,
+    tag: "POPULER",
   },
   {
     title: "TikTok",
-    text: "Cocok buat dorong konten biar lebih cepat ramai saat momen penting.",
-    icon: Gauge,
+    text: "Followers, likes, views, dan shares untuk bantu konten kamu masuk FYP lebih cepat.",
+    icon: Sparkles,
   },
   {
     title: "YouTube",
-    text: "Bisa dipakai untuk bantu video dan channel terlihat lebih meyakinkan.",
-    icon: PlaySquare,
+    text: "Subscribers, views, likes, dan watch time untuk bantu channel terlihat lebih siap monetisasi.",
+    icon: PlayCircle,
   },
   {
     title: "Facebook",
-    text: "Tetap relevan buat bisnis lokal yang masih aktif jualan lewat Facebook.",
-    icon: MessageCircleHeart,
+    text: "Page likes, followers, dan reactions buat bisnis yang masih aktif jualan lewat Facebook.",
+    icon: ThumbsUp,
   },
   {
     title: "Engagement Boost",
-    text: "Untuk bantu postingan terasa lebih hidup dan tidak terlihat sepi.",
-    icon: Flame,
+    text: "Komentar custom, mention, dan interaksi tambahan biar postingan terasa lebih hidup.",
+    icon: BarChart3,
   },
   {
     title: "Launching Booster",
-    text: "Pas untuk dorong produk baru, campaign baru, atau momen promosi singkat.",
-    icon: BadgeCheck,
+    text: "Paket khusus untuk hari pertama promo atau launching biar momentum awalnya nggak kebuang.",
+    icon: Flame,
   },
   {
     title: "Garansi Refill",
-    text: "Layanan tertentu dilengkapi refill supaya kamu bisa lebih tenang setelah order.",
-    icon: TimerReset,
+    text: "Kalau layanan tertentu turun dalam masa garansi, tinggal hubungi kami untuk isi ulang.",
+    icon: ShieldCheck,
+    tag: "FREE",
   },
   {
     title: "Pengiriman Cepat",
-    text: "Proses dimulai secepat mungkin tanpa bikin kamu menunggu terlalu lama.",
-    icon: Video,
+    text: "Mulai diproses dalam hitungan menit, lalu dikirim bertahap biar kelihatan lebih natural.",
+    icon: Clock3,
   },
 ];
 
 export function Features() {
   return (
-    <section className="py-20 sm:py-24">
-      <div className="container space-y-12">
-        <SectionHeading
-          eyebrow="Layanan"
-          title="Semua yang kamu butuhkan untuk bikin akun lebih siap dilihat"
-          description="Kami susun layanannya supaya gampang dipilih. Tidak perlu paham istilah ribet, cukup pilih sesuai tujuan kamu."
-        />
+    <section id="layanan" className="bg-[#f5f8ff] py-20 sm:py-24">
+      <div className="container">
+        <div className="mb-14 text-center">
+          <h2 className="text-[clamp(28px,4vw,40px)] font-extrabold leading-[1.15] tracking-[-0.025em] text-[#0a1330]">
+            Semua yang Kamu Butuhin{" "}
+            <span className="font-serif font-normal italic text-brand">
+              dalam Satu Tempat
+            </span>
+          </h2>
+          <p className="mx-auto mt-4 max-w-[560px] text-[17px] text-[#4a5680]">
+            Layanan lengkap untuk Instagram, TikTok, YouTube, dan Facebook dengan
+            tampilan yang simpel dan gampang dipilih.
+          </p>
+        </div>
 
-        <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {features.map((feature) => (
             <div
               key={feature.title}
-              className="group rounded-[1.75rem] border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-brand-200 hover:shadow-xl hover:shadow-brand-100/40"
+              className="rounded-xl border border-[#e6ecf7] bg-white p-[22px] transition duration-200 hover:-translate-y-0.5 hover:border-brand hover:shadow-[0_4px_16px_rgba(10,19,48,0.06)]"
             >
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-50 text-brand-600 transition group-hover:bg-brand group-hover:text-white">
+              <div className="grid h-[38px] w-[38px] place-items-center rounded-[9px] bg-brand-50 text-brand">
                 <feature.icon className="h-5 w-5" />
               </div>
-              <h3 className="mt-5 text-lg font-bold text-slate-950">{feature.title}</h3>
-              <p className="mt-3 text-sm leading-7 text-slate-600">{feature.text}</p>
+              <h3 className="mt-4 flex items-center gap-2 text-[15px] font-bold text-[#0a1330]">
+                {feature.title}
+                {feature.tag ? (
+                  <span className="rounded bg-brand px-1.5 py-0.5 text-[10px] font-bold tracking-[0.04em] text-white">
+                    {feature.tag}
+                  </span>
+                ) : null}
+              </h3>
+              <p className="mt-2 text-[13px] leading-[1.55] text-[#4a5680]">{feature.text}</p>
             </div>
           ))}
         </div>

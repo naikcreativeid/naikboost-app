@@ -5,33 +5,42 @@ import { Button } from "@/components/ui/button";
 
 export function FinalCta() {
   return (
-    <section className="pb-20 sm:pb-24">
+    <section className="px-6 py-10">
       <div className="container">
-        <div className="overflow-hidden rounded-[2rem] bg-slate-950 px-6 py-12 text-white shadow-2xl shadow-slate-300/40 sm:px-10 lg:px-14">
-          <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-brand-200">
-                Saatnya Naik
-              </p>
-              <h2 className="mt-4 max-w-2xl text-balance text-3xl font-bold tracking-tight sm:text-4xl">
-                Mau akun terlihat lebih siap jualan dan lebih meyakinkan?
-              </h2>
-              <p className="mt-4 max-w-2xl text-base leading-7 text-slate-300 sm:text-lg">
-                Mulai dari paket yang paling cocok untuk kebutuhan kamu. Prosesnya
-                cepat, bahasanya gampang dipahami, dan tim kami siap bantu.
-              </p>
-            </div>
+        <div className="relative overflow-hidden rounded-[24px] bg-[#0a1330] px-8 py-16 text-center text-white">
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_100%,rgba(45,92,246,0.4),transparent_70%),radial-gradient(ellipse_40%_40%_at_20%_0%,rgba(255,181,71,0.15),transparent_60%)]" />
+          <div className="relative">
+            <h2 className="text-[clamp(28px,4vw,40px)] font-extrabold leading-[1.15] tracking-[-0.025em]">
+              Siap Bikin Akun Kamu{" "}
+              <span className="font-serif font-normal italic text-[#ffb547]">
+                Naik Level?
+              </span>
+            </h2>
+            <p className="mx-auto mt-4 max-w-2xl text-[17px] text-white/70">
+              Ribuan creator dan bisnis udah ngerasain bedanya. Sekarang giliran
+              kamu.
+            </p>
 
-            <Button
-              asChild
-              size="lg"
-              className="rounded-full bg-brand px-7 text-white hover:bg-brand-500"
-            >
-              <Link href="/register">
-                Mulai Sekarang
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            </Button>
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+              <Button
+                asChild
+                size="lg"
+                className="h-auto rounded-[10px] bg-white px-7 py-3.5 text-[16px] font-semibold text-[#0a1330] hover:bg-[#ffb547]"
+              >
+                <Link href="/register">
+                  Mulai Boost Sekarang
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </Button>
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="h-auto rounded-[10px] border-white/20 bg-transparent px-7 py-3.5 text-[16px] font-semibold text-white hover:border-white hover:bg-white/5"
+              >
+                <Link href="/contact">Chat CS Dulu</Link>
+              </Button>
+            </div>
           </div>
         </div>
       </div>

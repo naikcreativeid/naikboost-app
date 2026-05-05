@@ -1,49 +1,50 @@
-import { Link2, MousePointerClick, Sparkles } from "lucide-react";
-
-import { SectionHeading } from "@/components/landing/section-heading";
-
 const steps = [
   {
+    number: "01",
     title: "Pilih Layanan",
-    text: "Tentukan paket yang paling cocok dengan kebutuhan akun atau momen promosi kamu.",
-    icon: MousePointerClick,
+    text: "Mau tambah followers, likes, views, atau komentar? Tinggal pilih sesuai kebutuhan akun kamu.",
   },
   {
-    title: "Masukkan Link",
-    text: "Tempel link akun atau postingan yang mau dibantu. Form-nya simpel dan cepat diisi.",
-    icon: Link2,
+    number: "02",
+    title: "Masukin Link Akun",
+    text: "Cuma butuh link akun atau postingan, nggak perlu password. Akun kamu tetap aman karena kami nggak pernah minta data login.",
   },
   {
+    number: "03",
     title: "Tunggu Hasilnya",
-    text: "Pesanan langsung masuk proses. Kamu tinggal tunggu pergerakannya tanpa ribet.",
-    icon: Sparkles,
+    text: "Pesanan masuk bertahap biar aman dan natural. Biasanya dalam 1-24 jam hasilnya mulai kelihatan di akun kamu.",
   },
 ];
 
 export function HowItWorks() {
   return (
-    <section id="cara-kerja" className="bg-slate-50 py-20 sm:py-24">
-      <div className="container space-y-12">
-        <SectionHeading
-          eyebrow="Cara Kerja"
-          title="Tiga langkah yang gampang diikuti"
-          description="Kami bikin alurnya sesingkat mungkin supaya orang awam pun langsung paham dari awal."
-        />
+    <section id="cara-kerja" className="py-20 sm:py-24">
+      <div className="container">
+        <div className="mb-14 text-center">
+          <h2 className="text-[clamp(28px,4vw,40px)] font-extrabold leading-[1.15] tracking-[-0.025em] text-[#0a1330]">
+            Cara Kerjanya{" "}
+            <span className="font-serif font-normal italic text-brand">
+              Simpel Banget
+            </span>
+          </h2>
+          <p className="mx-auto mt-4 max-w-[560px] text-[17px] text-[#4a5680]">
+            Cuma 3 langkah dari daftar sampai hasilnya kelihatan di akun kamu.
+          </p>
+        </div>
 
-        <div className="grid gap-5 lg:grid-cols-3">
-          {steps.map((step, index) => (
+        <div className="grid gap-5 md:grid-cols-3">
+          {steps.map((step) => (
             <div
-              key={step.title}
-              className="rounded-[2rem] border border-slate-200 bg-white p-7 shadow-sm"
+              key={step.number}
+              className="rounded-[18px] border border-[#e6ecf7] bg-white p-7"
             >
-              <div className="flex items-center justify-between">
-                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-50 text-brand-600">
-                  <step.icon className="h-6 w-6" />
-                </div>
-                <span className="text-5xl font-black text-slate-100">0{index + 1}</span>
+              <div className="font-serif text-[56px] italic leading-none text-brand">
+                {step.number}
               </div>
-              <h3 className="mt-8 text-xl font-bold text-slate-950">{step.title}</h3>
-              <p className="mt-3 text-sm leading-7 text-slate-600">{step.text}</p>
+              <h3 className="mt-4 text-[18px] font-bold tracking-[-0.01em] text-[#0a1330]">
+                {step.title}
+              </h3>
+              <p className="mt-2 text-[14px] leading-[1.6] text-[#4a5680]">{step.text}</p>
             </div>
           ))}
         </div>

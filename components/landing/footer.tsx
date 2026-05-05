@@ -1,41 +1,41 @@
 import Link from "next/link";
 
 const footerLinks = [
-  { href: "#cara-kerja", label: "Cara Kerja" },
-  { href: "#harga", label: "Harga" },
-  { href: "#faq", label: "FAQ" },
-  { href: "/syarat-ketentuan", label: "S&K" },
-  { href: "/kebijakan-privasi", label: "Privasi" },
-  { href: "/contact", label: "Kontak" },
-  { href: "/login", label: "Masuk" },
+  { href: "/syarat-ketentuan", label: "Syarat & Ketentuan" },
+  { href: "/kebijakan-privasi", label: "Kebijakan Privasi" },
+  { href: "/contact", label: "Hubungi Kami" },
 ];
 
 export function Footer() {
   return (
-    <footer className="border-t border-slate-200 bg-white">
-      <div className="container flex flex-col gap-6 py-8 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <p className="text-lg font-bold text-slate-950">NaikBoost</p>
-          <p className="mt-1 text-sm text-slate-500">
-            Bagian dari NaikGroup, satu keluarga dengan NaikCetak.
-          </p>
-        </div>
-
-        <div className="flex flex-wrap gap-x-6 gap-y-3">
-          {footerLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-sm text-slate-500 transition hover:text-brand-600"
-            >
-              {link.label}
+    <footer className="mt-20 border-t border-[#f0f4fc] py-12">
+      <div className="container">
+        <div className="flex flex-wrap items-center justify-between gap-6">
+          <div className="flex flex-wrap items-center gap-3">
+            <Link href="/" className="flex items-center gap-3 text-[#0a1330]">
+              <span className="grid h-[30px] w-[30px] place-items-center rounded-lg bg-[#0a1330] text-[16px] font-extrabold text-white">
+                N
+              </span>
+              <span className="text-[18px] font-extrabold tracking-[-0.02em]">
+                NaikBoost
+              </span>
             </Link>
-          ))}
-        </div>
-      </div>
-      <div className="border-t border-slate-200">
-        <div className="container py-4 text-sm text-slate-500">
-          Copyright {new Date().getFullYear()} NaikBoost. Semua hak dilindungi.
+            <span className="text-[13px] text-[#8590b0]">
+              © 2026 NaikBoost. Bagian dari NaikGroup.
+            </span>
+          </div>
+
+          <div className="flex flex-wrap gap-6">
+            {footerLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="text-[13px] font-medium text-[#4a5680] transition hover:text-[#0a1330]"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     </footer>
