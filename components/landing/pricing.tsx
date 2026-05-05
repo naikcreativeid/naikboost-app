@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { Check } from "lucide-react";
+import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { createClient } from "@/lib/supabase/server";
 
 type PackagePlan = {
   id: string;
@@ -23,16 +23,8 @@ type PackagePlan = {
     | null;
 };
 
-export async function Pricing() {
-  const supabase = createClient();
-  const { data } = await supabase
-    .from("packages")
-    .select("id, name, price, description, is_featured, delivery_time, bonus_description, service:services(refill_days)")
-    .eq("is_active", true)
-    .order("sort_order", { ascending: true })
-    .limit(3);
-
-  const plans = ((data || []) as PackagePlan[]).map((plan) => {
+function normalizePlans(data: PackagePlan[]) {
+  return data.map((plan) => {
     const service = Array.isArray(plan.service) ? plan.service[0] : plan.service;
     const features = [
       plan.delivery_time ? `Estimasi ${plan.delivery_time}` : "Proses cepat",
@@ -47,6 +39,46 @@ export async function Pricing() {
       features,
     };
   });
+}
+
+export async function Pricing() {
+  let plans: Array<
+    PackagePlan & {
+      service: { refill_days: number } | null;
+      features: string[];
+    }
+  > = [];
+
+  const hasSupabaseEnv =
+    Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL) &&
+    Boolean(process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+
+  if (hasSupabaseEnv) {
+    try {
+      const supabase = createSupabaseClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      );
+      const { data, error } = await supabase
+        .from("packages")
+        .select(
+          "id, name, price, description, is_featured, delivery_time, bonus_description, service:services(refill_days)",
+        )
+        .eq("is_active", true)
+        .order("sort_order", { ascending: true })
+        .limit(3);
+
+      if (error) {
+        console.error("[Pricing] fetch packages failed", error);
+      } else {
+        plans = normalizePlans((data || []) as PackagePlan[]);
+      }
+    } catch (error) {
+      console.error("[Pricing] unexpected error", error);
+    }
+  } else {
+    console.error("[Pricing] missing Supabase env on server render");
+  }
 
   return (
     <section id="harga" className="bg-slate-50 py-20 sm:py-24">
@@ -64,80 +96,93 @@ export async function Pricing() {
           </p>
         </div>
 
-        <div className="grid gap-6 xl:grid-cols-3">
-          {plans.map((plan) => (
-            <div
-              key={plan.id}
-              className={cn(
-                "relative rounded-[2rem] border border-slate-200 bg-white p-7 shadow-sm",
-                plan.is_featured &&
-                  "border-brand bg-brand text-white shadow-2xl shadow-brand-300/30",
-              )}
-            >
-              {plan.is_featured ? (
-                <div className="absolute right-6 top-6 rounded-full bg-white/15 px-3 py-1 text-xs font-bold uppercase tracking-[0.2em] text-white">
-                  Paling Dipilih
-                </div>
-              ) : null}
-              <p
+        {plans.length > 0 ? (
+          <div className="grid gap-6 xl:grid-cols-3">
+            {plans.map((plan) => (
+              <div
+                key={plan.id}
                 className={cn(
-                  "text-sm font-semibold uppercase tracking-[0.2em] text-brand-600",
-                  plan.is_featured && "text-brand-100",
+                  "relative rounded-[2rem] border border-slate-200 bg-white p-7 shadow-sm",
+                  plan.is_featured &&
+                    "border-brand bg-brand text-white shadow-2xl shadow-brand-300/30",
                 )}
               >
-                {plan.name}
-              </p>
-              <p className="mt-4 text-4xl font-black">
-                Rp {plan.price.toLocaleString("id-ID")}
-              </p>
-              <p
-                className={cn(
-                  "mt-4 text-sm leading-7 text-slate-600",
-                  plan.is_featured && "text-brand-50",
-                )}
-              >
-                {plan.description || "Paket siap pakai untuk bisnis dan creator yang ingin hasil lebih rapi."}
-              </p>
-
-              <div className="mt-6 space-y-3">
-                {plan.features.map((feature) => (
-                  <div key={feature} className="flex items-start gap-3">
-                    <div
-                      className={cn(
-                        "mt-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-brand-50 text-brand-600",
-                        plan.is_featured && "bg-white/15 text-white",
-                      )}
-                    >
-                      <Check className="h-3.5 w-3.5" />
-                    </div>
-                    <p
-                      className={cn(
-                        "text-sm leading-7 text-slate-700",
-                        plan.is_featured && "text-white",
-                      )}
-                    >
-                      {feature}
-                    </p>
+                {plan.is_featured ? (
+                  <div className="absolute right-6 top-6 rounded-full bg-white/15 px-3 py-1 text-xs font-bold uppercase tracking-[0.2em] text-white">
+                    Paling Dipilih
                   </div>
-                ))}
-              </div>
+                ) : null}
+                <p
+                  className={cn(
+                    "text-sm font-semibold uppercase tracking-[0.2em] text-brand-600",
+                    plan.is_featured && "text-brand-100",
+                  )}
+                >
+                  {plan.name}
+                </p>
+                <p className="mt-4 text-4xl font-black">
+                  Rp {plan.price.toLocaleString("id-ID")}
+                </p>
+                <p
+                  className={cn(
+                    "mt-4 text-sm leading-7 text-slate-600",
+                    plan.is_featured && "text-brand-50",
+                  )}
+                >
+                  {plan.description ||
+                    "Paket siap pakai untuk bisnis dan creator yang ingin hasil lebih rapi."}
+                </p>
 
-              <Button
-                asChild
-                size="lg"
-                variant={plan.is_featured ? "secondary" : "default"}
-                className={cn(
-                  "mt-8 w-full rounded-full",
-                  plan.is_featured
-                    ? "bg-white text-brand hover:bg-brand-50"
-                    : "bg-brand text-white hover:bg-brand-600",
-                )}
-              >
-                <Link href={`/order/${plan.id}`}>Pilih {plan.name}</Link>
-              </Button>
-            </div>
-          ))}
-        </div>
+                <div className="mt-6 space-y-3">
+                  {plan.features.map((feature) => (
+                    <div key={feature} className="flex items-start gap-3">
+                      <div
+                        className={cn(
+                          "mt-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-brand-50 text-brand-600",
+                          plan.is_featured && "bg-white/15 text-white",
+                        )}
+                      >
+                        <Check className="h-3.5 w-3.5" />
+                      </div>
+                      <p
+                        className={cn(
+                          "text-sm leading-7 text-slate-700",
+                          plan.is_featured && "text-white",
+                        )}
+                      >
+                        {feature}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+
+                <Button
+                  asChild
+                  size="lg"
+                  variant={plan.is_featured ? "secondary" : "default"}
+                  className={cn(
+                    "mt-8 w-full rounded-full",
+                    plan.is_featured
+                      ? "bg-white text-brand hover:bg-brand-50"
+                      : "bg-brand text-white hover:bg-brand-600",
+                  )}
+                >
+                  <Link href={`/order/${plan.id}`}>Pilih {plan.name}</Link>
+                </Button>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="rounded-[2rem] border border-dashed border-slate-300 bg-white px-6 py-10 text-center shadow-sm">
+            <p className="text-lg font-semibold text-slate-900">
+              Paket sedang kami siapkan
+            </p>
+            <p className="mt-3 text-sm leading-7 text-slate-600">
+              Landing page tetap aktif, tapi paket belum bisa ditampilkan karena data
+              Supabase belum siap atau environment di server belum lengkap.
+            </p>
+          </div>
+        )}
       </div>
     </section>
   );
