@@ -4,6 +4,9 @@ const footerLinks = [
   { href: "#cara-kerja", label: "Cara Kerja" },
   { href: "#harga", label: "Harga" },
   { href: "#faq", label: "FAQ" },
+  { href: "/syarat-ketentuan", label: "S&K" },
+  { href: "/kebijakan-privasi", label: "Privasi" },
+  { href: "/contact", label: "Kontak" },
   { href: "/login", label: "Masuk" },
 ];
 

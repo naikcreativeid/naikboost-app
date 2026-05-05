@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
+
 import { ResetPasswordForm } from "@/components/auth/reset-password-form";
+
+export const metadata: Metadata = {
+  title: "Reset Password",
+  description: "Atur ulang password akun NaikBoost kamu.",
+};
 
 export default function ResetPasswordPage() {
   return (

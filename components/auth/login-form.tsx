@@ -19,6 +19,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { trackClientEvent } from "@/lib/analytics/client";
 import { createClient } from "@/lib/supabase/client";
 
 const loginSchema = z.object({
@@ -79,6 +80,7 @@ export function LoginForm({ nextPath }: LoginFormProps) {
     toast.success("Login berhasil", {
       description: "Selamat datang kembali di NaikBoost.",
     });
+    trackClientEvent("login", { destination });
     router.push(destination);
     router.refresh();
   }

@@ -58,6 +58,15 @@ export const whatsappTemplates = {
     ].join("\n");
   },
 
+  orderFailed(customerName: string, serviceName: string, target: string) {
+    return [
+      `Halo ${customerName}, pesanan kamu untuk ${serviceName} belum berhasil diproses sampai selesai.`,
+      `Target: ${target}`,
+      "Tim kami akan cek lagi. Kalau perlu cepat, langsung hubungi CS kami ya.",
+      "- NaikBoost",
+    ].join("\n");
+  },
+
   guestOrderReceived(customerName: string, packageName: string, orderId: string) {
     return [
       `Halo ${customerName}! Pesanan kamu sudah diterima.`,

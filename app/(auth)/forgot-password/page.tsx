@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
+
 import { ForgotPasswordForm } from "@/components/auth/forgot-password-form";
+
+export const metadata: Metadata = {
+  title: "Lupa Password",
+  description: "Minta link reset password akun NaikBoost kamu.",
+};
 
 export default function ForgotPasswordPage() {
   return (

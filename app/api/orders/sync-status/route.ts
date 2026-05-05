@@ -29,9 +29,9 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const { updated } = await syncProcessingOrders();
+    const { updated, completed, failed } = await syncProcessingOrders();
 
-    return NextResponse.json({ success: true, updated });
+    return NextResponse.json({ success: true, updated, completed, failed });
   } catch (error) {
     console.error("[orders-sync-status] failed", error);
     return NextResponse.json(

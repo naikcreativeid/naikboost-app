@@ -19,6 +19,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { trackClientEvent } from "@/lib/analytics/client";
 import { isValidWhatsapp, normalizeWhatsapp } from "@/lib/auth/utils";
 import { createClient } from "@/lib/supabase/client";
 
@@ -96,6 +97,7 @@ export function RegisterForm() {
     toast.success("Akun berhasil dibuat", {
       description: "Sekarang kamu bisa lanjut login ke dashboard.",
     });
+    trackClientEvent("signup", { method: "email" });
     router.push("/verify-email");
     router.refresh();
   }

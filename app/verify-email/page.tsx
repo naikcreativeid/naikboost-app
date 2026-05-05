@@ -2,6 +2,13 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Verifikasi Email",
+  description: "Panduan verifikasi email untuk akun NaikBoost.",
+};
+
 export default function VerifyEmailPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-slate-50 px-6 py-10">

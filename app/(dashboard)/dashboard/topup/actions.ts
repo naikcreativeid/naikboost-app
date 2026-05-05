@@ -6,6 +6,7 @@ import { z } from "zod";
 
 import { sendWhatsApp } from "@/lib/api/fonnte";
 import { whatsappTemplates } from "@/lib/api/whatsapp-templates";
+import { trackServerEvent } from "@/lib/analytics/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 
@@ -123,6 +124,10 @@ export async function submitTopupAction(formData: FormData) {
 
   void Promise.allSettled(notifications).then((results) => {
     console.log("[submitTopupAction] WhatsApp settled", results);
+  });
+  void trackServerEvent("topup_submitted", {
+    amount: parsed.data.amount,
+    bank: parsed.data.bank,
   });
 
   revalidatePath("/dashboard");

@@ -27,10 +27,12 @@ export async function syncProcessingOrders(limit = 25) {
   }
 
   if (!orders || orders.length === 0) {
-    return { updated: 0 };
+    return { updated: 0, completed: 0, failed: 0 };
   }
 
   let updated = 0;
+  let completed = 0;
+  let failed = 0;
 
   for (let index = 0; index < orders.length; index += 5) {
     const chunk = orders.slice(index, index + 5);
@@ -91,10 +93,44 @@ export async function syncProcessingOrders(limit = 25) {
               console.log("[syncProcessingOrders] WhatsApp settled", results);
             });
           }
+
+          completed += 1;
+        }
+
+        if (nextStatus === "error" && localOrder.status !== "error") {
+          const [{ data: profile }, { data: service }] = await Promise.all([
+            admin
+              .from("profiles")
+              .select("full_name, whatsapp")
+              .eq("id", localOrder.user_id)
+              .maybeSingle(),
+            admin
+              .from("services")
+              .select("name")
+              .eq("id", localOrder.service_id)
+              .maybeSingle(),
+          ]);
+
+          if (profile?.whatsapp && service?.name) {
+            void Promise.allSettled([
+              sendWhatsApp({
+                target: profile.whatsapp,
+                message: whatsappTemplates.orderFailed(
+                  profile.full_name || "Kak",
+                  service.name,
+                  localOrder.target,
+                ),
+              }),
+            ]).then((results) => {
+              console.log("[syncProcessingOrders] WhatsApp settled", results);
+            });
+          }
+
+          failed += 1;
         }
       }
     }
   }
 
-  return { updated };
+  return { updated, completed, failed };
 }

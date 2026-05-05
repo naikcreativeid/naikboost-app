@@ -6,6 +6,7 @@ import { z } from "zod";
 import { sendWhatsApp } from "@/lib/api/fonnte";
 import { createOrder as createIrvanKedeOrder } from "@/lib/api/irvankede";
 import { whatsappTemplates } from "@/lib/api/whatsapp-templates";
+import { trackServerEvent } from "@/lib/analytics/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 
@@ -137,6 +138,13 @@ export async function createOrderAction(input: {
         console.log("[createOrderAction] WhatsApp settled", results);
       });
     }
+
+    void trackServerEvent("order_created", {
+      service_id: service.id,
+      platform: service.platform,
+      quantity: values.quantity,
+      total_price: totalPrice,
+    });
 
     revalidatePath("/dashboard");
     revalidatePath("/dashboard/orders");

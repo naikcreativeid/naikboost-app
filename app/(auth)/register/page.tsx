@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
+
 import { RegisterForm } from "@/components/auth/register-form";
+
+export const metadata: Metadata = {
+  title: "Daftar",
+  description: "Buat akun NaikBoost untuk isi saldo, order lebih cepat, dan pantau semua pesanan.",
+};
 
 export default function RegisterPage() {
   return (
